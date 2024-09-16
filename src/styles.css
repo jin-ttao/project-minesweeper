@@ -5,14 +5,14 @@
   grid-gap: 5px;
 }
 
-.topArea {
+.top-area {
   grid-row: 1/2;
   display: flex;
   justify-content: center;
   gap: 20px;
 }
 
-.gameBoard {
+.game-board {
   grid-row: 2/3;
   display: grid;
   grid-template-columns: repeat(9, 1fr);
@@ -24,13 +24,13 @@
   background-color: lightblue;
 }
 
-.numberPanel {
+.number-panel {
   width: 62px;
   height: 40px;
   background-color: rgb(37, 49, 60);
 }
 
-.resetButton {
+.reset-button {
   width: 40px;
   height: 40px;
   background-color: rgb(157, 199, 66);

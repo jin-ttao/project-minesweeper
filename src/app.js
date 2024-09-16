@@ -1,15 +1,15 @@
 function renderBoard() {
-  const gameBoard = document.querySelector(".gameBoard");
-  const widthSpace = 9;
-  const heightSpace = 9;
+  const gameBoard = document.querySelector(".game-board");
+  const WIDTHSPACE = 9;
+  const HEIGHTSPACE = 9;
 
-  for (let row = 0; row < heightSpace; row++) {
-    for (let column = 0; column < widthSpace; column++) {
+  for (let row = 0; row < HEIGHTSPACE; row++) {
+    for (let column = 0; column < WIDTHSPACE; column++) {
       const space = document.createElement("div");
 
       space.classList.add("item");
       space.dataset.row = row;
-      space.dataset.col = column;
+      space.dataset.column = column;
 
       gameBoard.appendChild(space);
     }
