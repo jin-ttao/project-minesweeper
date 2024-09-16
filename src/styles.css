@@ -1,0 +1,44 @@
+.wrapper {
+  display: grid;
+  grid-template-rows: 50px 230px;
+  grid-template-columns: 250px;
+  grid-gap: 5px;
+}
+
+.top-area {
+  grid-row: 1/2;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.game-board {
+  grid-row: 2/3;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+}
+
+.wrapper > div {
+  padding: 5px;
+  background-color: lightblue;
+}
+
+.number-panel {
+  width: 62px;
+  height: 40px;
+  background-color: rgb(37, 49, 60);
+}
+
+.reset-button {
+  width: 40px;
+  height: 40px;
+  background-color: rgb(157, 199, 66);
+  border: rgb(157, 199, 66);
+  cursor: pointer;
+}
+
+.item {
+  background-color: rgb(56, 56, 67);
+  border: 1px solid rgb(237, 237, 248);
+}
