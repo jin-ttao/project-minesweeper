@@ -1,10 +1,10 @@
-function renderBoard() {
+export function renderBoard() {
   const gameBoard = document.querySelector(".game-board");
-  const WIDTHSPACE = 9;
-  const HEIGHTSPACE = 9;
+  const WIDTH_SPACE = 9;
+  const HEIGHT_SPACE = 9;
 
-  for (let row = 0; row < HEIGHTSPACE; row++) {
-    for (let column = 0; column < WIDTHSPACE; column++) {
+  for (let row = 0; row < HEIGHT_SPACE; row++) {
+    for (let column = 0; column < WIDTH_SPACE; column++) {
       const space = document.createElement("div");
 
       space.classList.add("item");
