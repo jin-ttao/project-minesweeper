@@ -1,4 +1,6 @@
-function renderBoard() {
+import { openBoard } from "./check.js";
+
+export function renderBoard() {
   const gameBoard = document.querySelector(".game-board");
   const WIDTHSPACE = 9;
   const HEIGHTSPACE = 9;
@@ -15,5 +17,3 @@ function renderBoard() {
     }
   }
 }
-
-renderBoard();

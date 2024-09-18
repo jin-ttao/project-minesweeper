@@ -42,3 +42,12 @@
   background-color: rgb(56, 56, 67);
   border: 1px solid rgb(237, 237, 248);
 }
+
+.landmine {
+  background-image: url("../../img/land-mine-minesweeper-classic.png");
+  background-size: contain;
+}
+
+.block-click {
+  pointer-events: none;
+}
