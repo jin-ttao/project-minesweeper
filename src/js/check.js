@@ -1,79 +1,19 @@
-import { renderBoard } from "./app.js";
-
-
-
+import { renderBoard, setGame, setNumber, landmineLocation, gameMap } from "./app.js";
 renderBoard();
-
-const openSpace = Array.from(new Array(9), () => new Array(9).fill(0));
-const blanks = [];
-const item = document.querySelectorAll(".item");
-const resetButton = document.querySelector(".reset-button");
-const gameBoard = Array.from(Array(9), () => Array(9).fill(null));
-const landmineLocation = {};
-
-item.forEach((item) => {
-  item.addEventListener("click", (event) => {
-    // checkItemValue(event);
-    console.log(item);
-  });
-});
-resetButton.addEventListener("click", reset);
-
 setGame();
 
-function setGame() {
-  while (Object.keys(landmineLocation).length < 10) {
-    const randomArray = Array.from(new Array(2), () =>
-      Math.floor(Math.random() * 9)
-    );
+const item = document.querySelectorAll(".item");
+const resetButton = document.querySelector(".reset-button");
+const resolvedItem = Array.from(new Array(9), () => new Array(9).fill(false));
+const blanksAfterClickBlank = [];
 
-    if (!landmineLocation.hasOwnProperty(randomArray)) {
-      landmineLocation[randomArray] = 4;
 
-      const [randomRow, randomColumn] = randomArray;
-      gameBoard[randomRow][randomColumn] = 4;
-    }
-  }
-
-  for (let i = 0; i < 9; i++) {
-    for (let j = 0; j < 9; j++) {
-      setNumber(i, j);
-    }
-  }
-  console.log("f", gameBoard);
-}
-
-function setNumber(row, column) {
-  let count = 0;
-
-  if (gameBoard[row][column] === 4) {
-    return;
-  }
-  for (let i = -1; i <= 1; i++) {
-    for (let j = -1; j <= 1; j++) {
-      if (
-        row + i >= 0 &&
-        row + i <= 8 &&
-        column + j >= 0 &&
-        column + j <= 8 &&
-        !(row + i === row && column + j === column)
-      ) {
-        if (gameBoard[row + i][column + j] === 4) {
-          count++;
-        }
-      }
-    }
-  }
-  gameBoard[row][column] = count;
-}
-
-function clickMine() {
+const clickMine = function () {
   for (const key of Object.keys(landmineLocation)) {
     const [row, column] = key.split(",");
 
     item.forEach((target) => {
       if (target.dataset.row === row && target.dataset.column === column) {
-        // target.style.backgroundColor = "green";
         target.classList.add("landmine");
       }
     });
@@ -82,41 +22,120 @@ function clickMine() {
   document.querySelector("#messageForUser").textContent = "게임 종료! 재시작 버튼을 눌러주세요";
 }
 
-function reset() {
-  // setGame();
+const reset = function () {
+
 }
 
-export function openBoard(row, col) {
-  openSpace[row][col] = 1;
 
-  for (let i = row - 1; i <= row + 1; i++) {
-    if (i >= 0 && i < 9) {
-      for (let j = col - 1; j <= col + 1; j++) {
-        if (
-          !(i === row && j === col) &&
-          j >= 0 &&
-          j < 9 &&
-          openSpace[i][j] === 0
-        ) {
-          console.log(
-            `화면에 표시 row: ${i}, col: ${j}, value: ${gameBoard[i][j]}`
-          );
-          openSpace[i][j] = 1;
+// import {renderBoard} from './app.js'
 
-          if (gameBoard[i][j] === 0) {
-            blanks.push(i, j);
+// const gameBoard = [
+//   [0,0,1,4,2,4,1,0,0],
+//   [0,1,2,2,2,1,1,0,0],
+//   [0,1,4,1,0,0,0,0,0],
+//   [0,2,3,3,1,1,1,1,0],
+//   [1,1,1,0,0,0,0,0,0],
+//   [1,4,1,0,0,0,0,0,0],
+//   [1,1,1,0,0,0,0,0,0],
+//   [0,0,0,0,0,0,0,0,0],
+//   [0,0,0,0,0,0,0,0,0],
+// ]
+// const imgFlag = 
+const flagRecord = {};
+
+const checkItemValue = function (row, column) {
+  if (gameMap[row][column] === 4) {
+    clickMine();
+    console.log('지뢰 클릭, 게임 끝!');
+    return;
+  }
+
+  if (gameMap[row][column] > 0 && gameMap[row][column] < 4) {
+    console.log('숫자 클릭');
+    confirmResolution(row, column);
+    return;
+  }
+
+  resolveItemBlank(row, column);
+};
+
+const resolveItemBlank = function (row, column) {
+  const aboveRow = row - 1;
+  const belowRow = row + 1;
+  const preColumn = column - 1;
+  const nextColumn = column + 1;
+
+  confirmResolution(row, column);
+
+  for (let i = aboveRow; i <= belowRow; i++) {
+    const isInRangeRow = i >= 0 && i < 9;
+
+    if (isInRangeRow) {
+      for (let j = preColumn; j <= nextColumn; j++) {
+        const isInRangeColumn = j >= 0 && j < 9;
+
+        if (isInRangeColumn && !(i === row && j === column) && (resolvedItem[i][j] === false)) {
+          confirmResolution(i, j);
+
+          if (gameMap[i][j] === 0) {
+            blanksAfterClickBlank.push(i, j);
           }
         }
       }
     }
   }
 
-  if (blanks.length > 0) {
-    const blanksRow = blanks.shift();
-    const blanksColumn = blanks.shift();
+  if (blanksAfterClickBlank.length > 0) {
+    const blankRow = blanksAfterClickBlank.shift();
+    const blankColumn = blanksAfterClickBlank.shift();
 
-    openBoard(blanksRow, blanksColumn);
+    resolveItemBlank(blankRow, blankColumn);
   } else {
     return console.log("끝");
   }
-}
+};
+
+const confirmResolution = function (row, column) {
+  const WIDTH_SPACE = 9; // import 해결 필요
+  const index = row * WIDTH_SPACE + Number(column);
+
+  item[index].classList.add("resolved-item");
+  resolvedItem[row][column] = true;
+
+  if (gameMap[row][column] !== 0) {
+    item[index].textContent = gameMap[row][column];
+  }
+};
+
+const setFlag = function (row, column) {
+  const WIDTH_SPACE = 9; // import 해결 필요
+  const index = row * WIDTH_SPACE + Number(column);
+  const imgElement = new Image();
+
+  imgElement.classList.add("img-flag");
+  imgElement.src = 'src/img/flag.svg';
+
+  item[index].appendChild(imgElement);
+  // 좌클릭 불가
+  // 우클릭 2번 하면 풀어주기
+  // 깃발 숫자 카운트
+  // 아이디어: 토글
+};
+
+item.forEach((element) => {
+  element.addEventListener("mousedown", (event) => {
+    // console.log(event.button);
+    // console.log("좌클릭");
+
+    const rowItemClicked = event.target.dataset.row;
+    const columnItemClicked = event.target.dataset.column;
+    checkItemValue(parseInt(rowItemClicked), parseInt(columnItemClicked));
+    // setFlag(rowItemClicked, columnItemClicked);
+    // if (event.button === 2) {
+    //   console.log("우클릭");
+    //   return;
+    // }
+  });
+});
+
+resetButton.addEventListener("click", reset);
