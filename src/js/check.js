@@ -1,5 +1,6 @@
-const itemArrForTest = 
-  [
+// import {renderBoard} from './app.js'
+
+const itemArrForTest = [
   [0,0,1,4,2,4,1,0,0],
   [0,1,2,2,2,1,1,0,0],
   [0,1,4,1,0,0,0,0,0],
@@ -24,7 +25,7 @@ function checkItemValue(event) {
   
   if (itemArrForTest[rowItemClicked][columnItemClicked] > 0 && itemArrForTest[rowItemClicked][columnItemClicked] < 4) {
     console.log('숫자 클릭');
-    resolvedItem[rowItemClicked][columnItemClicked] = true;
+    confirmResolution(rowItemClicked, columnItemClicked);
     return;
   }
 
@@ -37,7 +38,7 @@ function resolveItemBlank(row, column) {
   const preColumn = column - 1;
   const nextColumn = column + 1;
 
-  resolvedItem[row][column] = true;
+  confirmResolution(row, column);
 
   for (let i = aboveRow; i <= belowRow; i++) {
     const isInRangeRow = i >= 0 && i < 9;
@@ -48,7 +49,7 @@ function resolveItemBlank(row, column) {
 
         if (isInRangeColumn && !(i === row && j === column) && (resolvedItem[i][j] === false)) {
           console.log(`화면에 표시 row: ${i}, col: ${j}, value: ${itemArrForTest[i][j]}`);
-          resolvedItem[i][j] = true;
+          confirmResolution(i, j);
 
           if (itemArrForTest[i][j] === 0) {
             blanksAfterClickBlank.push(i, j);
@@ -68,4 +69,22 @@ function resolveItemBlank(row, column) {
   }
 }
 
-resolveItemBlank(0, 8);
+function confirmResolution(row, column) {
+  const WIDTH_SPACE = 9; // import 해결 필요
+  const index = row * WIDTH_SPACE + Number(column);
+  const item = document.querySelectorAll(".item")[index];
+
+  item.classList.add("resolved-item");
+  resolvedItem[row][column] = true;
+
+  if (itemArrForTest[row][column] !== 0) {
+    item.textContent = itemArrForTest[row][column];
+  }
+}
+
+const item = document.querySelectorAll(".item");
+item.forEach((item) => {
+  item.addEventListener("click", (event) => {
+    checkItemValue(event);
+  })
+});

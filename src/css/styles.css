@@ -24,6 +24,15 @@
   background-color: lightblue;
 }
 
+.resolved-item {
+  background-color: blue !important;
+  font-size: 70%;
+  text-align: center;
+  color: white;
+  padding: 5px;
+  pointer-events: none;
+}
+
 .number-panel {
   width: 62px;
   height: 40px;
@@ -39,6 +48,8 @@
 }
 
 .item {
-  background-color: rgb(56, 56, 67);
+  /* background-color: rgb(56, 56, 67); */
+  background-color: white;
   border: 1px solid rgb(237, 237, 248);
+  cursor: pointer;
 }

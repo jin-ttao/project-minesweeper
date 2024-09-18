@@ -1,4 +1,4 @@
-function renderBoard() {
+export function renderBoard() {
   const gameBoard = document.querySelector(".game-board");
   const WIDTH_SPACE = 9;
   const HEIGHT_SPACE = 9;
