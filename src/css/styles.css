@@ -52,4 +52,12 @@
   background-color: white;
   border: 1px solid rgb(237, 237, 248);
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.img-flag {
+  width: 70%;
+  height: 70%;
 }
