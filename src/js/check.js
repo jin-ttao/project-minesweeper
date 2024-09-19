@@ -84,12 +84,22 @@ const confirmResolution = function (row, column) {
 const setFlag = function (row, column) {
   const WIDTH_SPACE = 9; // import 해결 필요
   const index = row * WIDTH_SPACE + Number(column);
-  const imgElement = new Image();
+  console.log("부모", item[index]);
+  const imageExisted = item[index].querySelector("img-flag"); // 선택을 못해옴.
+  console.log("자식", imageExisted);
 
-  imgElement.classList.add("img-flag");
-  imgElement.src = 'src/img/flag.svg';
+  if (imageExisted) {
+    console.log("지우자");
+    imageExisted.remove();
+    return;
+  }
 
-  item[index].appendChild(imgElement);
+  const imgElementNew = new Image();
+
+  imgElementNew.classList.add("img-flag");
+  imgElementNew.src = 'src/img/flag.svg';
+
+  item[index].appendChild(imgElementNew);
   // 좌클릭 불가
   // 우클릭 2번 하면 풀어주기
   // 깃발 숫자 카운트
