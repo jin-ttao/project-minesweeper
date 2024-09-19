@@ -11,16 +11,29 @@ let countFlags = 10;
 
 panelCountFlag.textContent = countFlags;
 
-const clickMine = function () {
+const clickMine = function (rowClicked, columnClicked) {
+  const WIDTH_SPACE = 9; // import 해결 필요
+  const index = (rowClicked * WIDTH_SPACE) + columnClicked;
+
   for (const key of Object.keys(landmineLocation)) {
     const [row, column] = key.split(",");
 
-    item.forEach((target) => {
-      if (target.dataset.row === row && target.dataset.column === column) {
-        target.classList.add("landmine");
+    item.forEach((element) => {
+      if (element.dataset.row === row && element.dataset.column === column) {
+        const flagExisted = element.querySelector(".img-flag");
+
+        if (!flagExisted) {
+          element.classList.add("landmine");
+        }
+
+        if (flagExisted) {
+          element.classList.add("landmine-with-flag");
+        }
       }
     });
   }
+
+  item[index].classList.add("mine-clicked");
   document.querySelector(".game-board").classList.add("block-click");
   document.querySelector("#messageForUser").textContent = "게임 종료! 재시작 버튼을 눌러주세요";
 }
@@ -31,7 +44,7 @@ const reset = function () {
 
 const checkItemValue = function (row, column) {
   if (gameMap[row][column] === 4) {
-    clickMine();
+    clickMine(row, column);
     console.log('지뢰 클릭, 게임 끝!');
     return;
   }
@@ -83,10 +96,17 @@ const resolveItemBlank = function (row, column) {
 
 const confirmResolution = function (row, column) {
   const WIDTH_SPACE = 9; // import 해결 필요
-  const index = row * WIDTH_SPACE + Number(column);
+  const index = (row * WIDTH_SPACE) + column;
+  const flagExisted = item[index].querySelector(".img-flag");
 
   item[index].classList.add("resolved-item");
   resolvedItem[row][column] = true;
+
+  if (flagExisted) {
+    countFlags++;
+    flagExisted.remove();
+    panelCountFlag.textContent = countFlags; 
+  }
 
   if (gameMap[row][column] !== 0) {
     item[index].textContent = gameMap[row][column];
