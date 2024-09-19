@@ -43,10 +43,15 @@
   width: 40px;
   height: 40px;
   background-color: rgb(157, 199, 66);
-  border: rgb(157, 199, 66);
+  border: none;
   cursor: pointer;
   background-image: url("../img/smile.png");
   background-size: 40px 40px;
+  box-shadow: 3px 3px 5px #adadad;
+}
+
+.reset-button:active {
+  box-shadow: inset 3px 3px 6px #adadad;
 }
 
 .item {
