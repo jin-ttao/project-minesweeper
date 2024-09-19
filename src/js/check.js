@@ -4,9 +4,12 @@ setGame();
 
 const item = document.querySelectorAll(".item");
 const resetButton = document.querySelector(".reset-button");
+const panelCountFlag = document.querySelector("#panelCountFlag");
 const resolvedItem = Array.from(new Array(9), () => new Array(9).fill(false));
 const blanksAfterClickBlank = [];
+let countFlags = 10;
 
+panelCountFlag.textContent = countFlags;
 
 const clickMine = function () {
   for (const key of Object.keys(landmineLocation)) {
@@ -24,24 +27,7 @@ const clickMine = function () {
 
 const reset = function () {
 
-}
-
-
-// import {renderBoard} from './app.js'
-
-// const gameBoard = [
-//   [0,0,1,4,2,4,1,0,0],
-//   [0,1,2,2,2,1,1,0,0],
-//   [0,1,4,1,0,0,0,0,0],
-//   [0,2,3,3,1,1,1,1,0],
-//   [1,1,1,0,0,0,0,0,0],
-//   [1,4,1,0,0,0,0,0,0],
-//   [1,1,1,0,0,0,0,0,0],
-//   [0,0,0,0,0,0,0,0,0],
-//   [0,0,0,0,0,0,0,0,0],
-// ]
-// const imgFlag = 
-const flagRecord = {};
+};
 
 const checkItemValue = function (row, column) {
   if (gameMap[row][column] === 4) {
@@ -107,45 +93,45 @@ const confirmResolution = function (row, column) {
   }
 };
 
-const setFlag = function (row, column) {
-  const WIDTH_SPACE = 9; // import 해결 필요
-  const index = row * WIDTH_SPACE + Number(column);
-  console.log("부모", item[index]);
-  const imageExisted = item[index].querySelector("img-flag"); // 선택을 못해옴.
-  console.log("자식", imageExisted);
-
-  if (imageExisted) {
-    console.log("지우자");
-    imageExisted.remove();
+const setFlag = function (index, flagExisted) {
+  if (flagExisted) {
+    countFlags++;
+    flagExisted.remove();
+    panelCountFlag.textContent = countFlags;
     return;
   }
 
   const imgElementNew = new Image();
 
+  countFlags--;
+  panelCountFlag.textContent = countFlags;
   imgElementNew.classList.add("img-flag");
   imgElementNew.src = 'src/img/flag.svg';
-
   item[index].appendChild(imgElementNew);
-  // 좌클릭 불가
-  // 우클릭 2번 하면 풀어주기
-  // 깃발 숫자 카운트
-  // 아이디어: 토글
 };
 
 item.forEach((element) => {
   element.addEventListener("mousedown", (event) => {
-    // console.log(event.button);
-    // console.log("좌클릭");
+    const rowItemClicked = parseInt(event.currentTarget.dataset.row);
+    const columnItemClicked = parseInt(event.currentTarget.dataset.column);
+    const WIDTH_SPACE = 9; // import 해결 필요
+    const indexElementCliked = (rowItemClicked * WIDTH_SPACE) + columnItemClicked;
+    const flagExisted = item[indexElementCliked].querySelector(".img-flag");
 
-    const rowItemClicked = event.target.dataset.row;
-    const columnItemClicked = event.target.dataset.column;
-    checkItemValue(parseInt(rowItemClicked), parseInt(columnItemClicked));
-    // setFlag(rowItemClicked, columnItemClicked);
-    // if (event.button === 2) {
-    //   console.log("우클릭");
-    //   return;
-    // }
+    if (event.button === 0 && flagExisted === null) {
+      checkItemValue(rowItemClicked, columnItemClicked);
+      return;
+    }
+
+    if (event.button === 2) {
+      setFlag(indexElementCliked, flagExisted);
+      return;
+    }
   });
+});
+
+item.forEach((element) => {
+  element.addEventListener("contextmenu", (event) => event.preventDefault());
 });
 
 resetButton.addEventListener("click", reset);

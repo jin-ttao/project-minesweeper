@@ -36,7 +36,25 @@
 .number-panel {
   width: 62px;
   height: 40px;
-  background-color: rgb(37, 49, 60);
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.number-panel > img {
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  left: 5px;
+}
+
+#panelCountFlag {
+  font-size: 90%;
+  color: black;
+  position: absolute;
+  right: 10px;
 }
 
 .reset-button {
@@ -57,7 +75,7 @@
   align-items: center;
 }
 
-.img-flag {
+img {
   width: 70%;
   height: 70%;
 }
