@@ -1,4 +1,4 @@
-import { renderBoard, setGame, setNumber, landmineLocation, gameMap } from "./app.js";
+import { renderBoard, setGame, landmineLocation, gameMap } from "./app.js";
 renderBoard();
 setGame();
 
@@ -36,10 +36,22 @@ const clickMine = function (rowClicked, columnClicked) {
   item[index].classList.add("mine-clicked");
   document.querySelector(".game-board").classList.add("block-click");
   document.querySelector("#messageForUser").textContent = "게임 종료! 재시작 버튼을 눌러주세요";
+  resetButton.classList.add("lose-game");
 }
 
 const reset = function () {
+  item.forEach((element) => {
+    element.classList.remove("resolved-item", "landmine");
+    element.textContent = "";
+  });
+  resetButton.classList.remove("lose-game");
+  document.querySelector(".game-board").classList.remove("block-click");
+  document.querySelector("#messageForUser").textContent = "";
 
+  Object.keys(landmineLocation).forEach((key) => delete landmineLocation[key]);
+  gameMap.forEach((array) => array.fill(null));
+  resolvedItem.forEach((array) => array.fill(false));
+  setGame();
 };
 
 const checkItemValue = function (row, column) {
@@ -89,9 +101,8 @@ const resolveItemBlank = function (row, column) {
     const blankColumn = blanksAfterClickBlank.shift();
 
     resolveItemBlank(blankRow, blankColumn);
-  } else {
-    return console.log("끝");
   }
+  return;
 };
 
 const confirmResolution = function (row, column) {
