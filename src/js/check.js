@@ -1,4 +1,4 @@
-import { renderBoard, setGame, setNumber, landmineLocation, gameMap } from "./app.js";
+import { renderBoard, setGame, landmineLocation, gameMap } from "./app.js";
 renderBoard();
 setGame();
 
@@ -20,26 +20,26 @@ const clickMine = function () {
   }
   document.querySelector(".game-board").classList.add("block-click");
   document.querySelector("#messageForUser").textContent = "게임 종료! 재시작 버튼을 눌러주세요";
+  resetButton.classList.add("lose-game");
 }
 
 const reset = function () {
+  item.forEach((element) => {
+    element.classList.remove("resolved-item", "landmine");
+    element.textContent = "";
+  });
+  resetButton.classList.remove("lose-game");
+  document.querySelector(".game-board").classList.remove("block-click");
+  document.querySelector("#messageForUser").textContent = "";
 
+  Object.keys(landmineLocation).forEach((key) => delete landmineLocation[key]);
+  gameMap.forEach((array) => array.fill(null));
+  resolvedItem.forEach((array) => array.fill(false));
+  setGame();
 }
 
 
 // import {renderBoard} from './app.js'
-
-// const gameBoard = [
-//   [0,0,1,4,2,4,1,0,0],
-//   [0,1,2,2,2,1,1,0,0],
-//   [0,1,4,1,0,0,0,0,0],
-//   [0,2,3,3,1,1,1,1,0],
-//   [1,1,1,0,0,0,0,0,0],
-//   [1,4,1,0,0,0,0,0,0],
-//   [1,1,1,0,0,0,0,0,0],
-//   [0,0,0,0,0,0,0,0,0],
-//   [0,0,0,0,0,0,0,0,0],
-// ]
 // const imgFlag = 
 const flagRecord = {};
 
@@ -90,9 +90,8 @@ const resolveItemBlank = function (row, column) {
     const blankColumn = blanksAfterClickBlank.shift();
 
     resolveItemBlank(blankRow, blankColumn);
-  } else {
-    return console.log("끝");
   }
+  return;
 };
 
 const confirmResolution = function (row, column) {
@@ -104,6 +103,15 @@ const confirmResolution = function (row, column) {
 
   if (gameMap[row][column] !== 0) {
     item[index].textContent = gameMap[row][column];
+  }
+
+  const count = resolvedItem.reduce((falseCount, array) => {
+    return falseCount + array.filter((element) => element === false).length;
+  }, 0);
+  if (count === 10) {
+    document.querySelector(".game-board").classList.add("block-click");
+    document.querySelector("#messageForUser").textContent = "게임 종료! 승리하였습니다. 재시작 버튼을 눌러주세요";
+    return;
   }
 };
 

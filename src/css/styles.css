@@ -29,7 +29,7 @@
   font-size: 70%;
   text-align: center;
   color: white;
-  padding: 5px;
+  /* padding: 5px; */
   pointer-events: none;
 }
 
@@ -45,6 +45,8 @@
   background-color: rgb(157, 199, 66);
   border: rgb(157, 199, 66);
   cursor: pointer;
+  background-image: url("../img/smile.png");
+  background-size: 40px 40px;
 }
 
 .item {
@@ -64,9 +66,14 @@
 
 .landmine {
   background-image: url("../img/land-mine-minesweeper-classic.png");
-  background-size: 26px 26px;
+  background-size: 25px 24px;
 }
 
 .block-click {
   pointer-events: none;
+}
+
+.lose-game {
+  background-image: url("../img/ken-serious.png");
+  background-size: 40px 40px;
 }
