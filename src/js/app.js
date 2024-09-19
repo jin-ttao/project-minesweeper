@@ -38,7 +38,6 @@ export const setGame = function () {
       setNumber(i, j);
     }
   }
-  console.log("setGame", gameMap);
 };
 
 export const setNumber = function (row, column) {

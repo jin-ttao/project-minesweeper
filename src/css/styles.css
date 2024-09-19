@@ -1,8 +1,29 @@
+html, body {
+  height: 100vh;
+}
+
+body {
+  font-family: "Single Day", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+h1 {
+  text-align: center;
+}
+
 .wrapper {
   display: grid;
   grid-template-rows: 50px 230px;
   grid-template-columns: 250px;
   grid-gap: 5px;
+  width: 250px;
+  margin: 0 auto;
 }
 
 .top-area {
@@ -25,11 +46,11 @@
 }
 
 .resolved-item {
-  background-color: blue !important;
+  box-shadow: 3px 3px 3px 2px lightblue inset !important;
   font-size: 70%;
   text-align: center;
-  color: white;
-  /* padding: 5px; */
+  color: gray;
+  font-weight: 1000;
   pointer-events: none;
 }
 
@@ -73,7 +94,6 @@
 }
 
 .item {
-  /* background-color: rgb(56, 56, 67); */
   background-color: white;
   border: 1px solid rgb(237, 237, 248);
   cursor: pointer;
@@ -85,25 +105,22 @@
 img {
   width: 70%;
   height: 70%;
-  /* background-image: url("../img/flag.svg");
-  background-size: 70% 70%;
-  background-repeat: no-repeat; */
 }
 
 .landmine {
-  background-image: url("../img/land-mine-minesweeper-classic.svg");
+  background-image: url("../img/land-mine.svg");
   background-size: 80% 80%;
   background-repeat: no-repeat;
   background-position: center;
-  border: 1px solid red;
+  border: 2px solid #05b2eb;
 }
 
 .landmine-with-flag {
-  border: 1px solid red;
+  border: 2px solid #05b2eb;
 }
 
 .mine-clicked {
-  border: 2px solid red;
+  border: 2px solid #d92602;
   border-style: inset;
 }
 
@@ -114,4 +131,12 @@ img {
 .lose-game {
   background-image: url("../img/ken-serious.png");
   background-size: 40px 40px;
+  border: 2px inset white;
+}
+
+#messageForUser {
+  font-size: 20px;
+  font-weight: 1000;
+  margin-top: 10px;
+  text-align: center;
 }

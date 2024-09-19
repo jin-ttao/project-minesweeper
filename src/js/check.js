@@ -2,6 +2,7 @@ import { renderBoard, setGame, landmineLocation, gameMap } from "./app.js";
 renderBoard();
 setGame();
 
+const WIDTH_SPACE = 9;
 const item = document.querySelectorAll(".item");
 const resetButton = document.querySelector(".reset-button");
 const panelCountFlag = document.querySelector("#panelCountFlag");
@@ -12,7 +13,6 @@ let countFlags = 10;
 panelCountFlag.textContent = countFlags;
 
 const clickMine = function (rowClicked, columnClicked) {
-  const WIDTH_SPACE = 9; // import 해결 필요
   const index = (rowClicked * WIDTH_SPACE) + columnClicked;
 
   for (const key of Object.keys(landmineLocation)) {
@@ -35,34 +35,38 @@ const clickMine = function (rowClicked, columnClicked) {
 
   item[index].classList.add("mine-clicked");
   document.querySelector(".game-board").classList.add("block-click");
-  document.querySelector("#messageForUser").textContent = "게임 종료! 재시작 버튼을 눌러주세요";
+  document.querySelector("#messageForUser").textContent = "🫠 아쉽군요! 위 가운데 버튼을 눌러 다시 시작해보세요!";
   resetButton.classList.add("lose-game");
 }
 
 const reset = function () {
   item.forEach((element) => {
-    element.classList.remove("resolved-item", "landmine");
+    element.classList.remove("resolved-item", "landmine", "landmine-with-flag", "mine-clicked");
     element.textContent = "";
   });
+
   resetButton.classList.remove("lose-game");
+
   document.querySelector(".game-board").classList.remove("block-click");
   document.querySelector("#messageForUser").textContent = "";
 
   Object.keys(landmineLocation).forEach((key) => delete landmineLocation[key]);
   gameMap.forEach((array) => array.fill(null));
   resolvedItem.forEach((array) => array.fill(false));
+
+  countFlags = 10;
+  panelCountFlag.textContent = countFlags;
+
   setGame();
 };
 
 const checkItemValue = function (row, column) {
   if (gameMap[row][column] === 4) {
     clickMine(row, column);
-    console.log('지뢰 클릭, 게임 끝!');
     return;
   }
 
   if (gameMap[row][column] > 0 && gameMap[row][column] < 4) {
-    console.log('숫자 클릭');
     confirmResolution(row, column);
     return;
   }
@@ -106,7 +110,6 @@ const resolveItemBlank = function (row, column) {
 };
 
 const confirmResolution = function (row, column) {
-  const WIDTH_SPACE = 9; // import 해결 필요
   const index = (row * WIDTH_SPACE) + column;
   const flagExisted = item[index].querySelector(".img-flag");
 
@@ -145,7 +148,6 @@ item.forEach((element) => {
   element.addEventListener("mousedown", (event) => {
     const rowItemClicked = parseInt(event.currentTarget.dataset.row);
     const columnItemClicked = parseInt(event.currentTarget.dataset.column);
-    const WIDTH_SPACE = 9; // import 해결 필요
     const indexElementCliked = (rowItemClicked * WIDTH_SPACE) + columnItemClicked;
     const flagExisted = item[indexElementCliked].querySelector(".img-flag");
 
