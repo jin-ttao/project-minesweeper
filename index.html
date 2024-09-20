@@ -4,17 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MINESWEEPER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Single+Day&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./src/css/styles.css">
 </head>
 <body>
   <header>
-    <h1>9x9 지뢰 10개</h1>
+    <div id="title">
+      <h1>지뢰 10개 찾기!</h1>
+    </div>
   </header>
   <main class="wrapper">
     <div class="top-area">
-      <div class="number-panel"></div>
+      <div class="number-panel">
+        <img src="src/img/flag.svg">
+        <div id="panelCountFlag"></div>
+      </div>
       <input class="reset-button" type="button"></input>
-      <div class="number-panel"></div>
+      <div class="number-panel">
+        <img src="src/img/timer.svg">
+        <div id="panelCountTimer"></div>
+      </div> 
     </div>
     <div class="game-board">
     </div>
