@@ -120,6 +120,16 @@ const confirmResolution = function (row, column) {
   if (gameMap[row][column] !== 0) {
     item[index].textContent = gameMap[row][column];
   }
+
+  const countUnresolved = resolvedItem.reduce((falseCount, array) => {
+    return falseCount + array.filter((element) => element === false).length;
+  }, 0);
+
+  if (countUnresolved === countMine) {
+    document.querySelector(".game-board").classList.add("block-click");
+    document.querySelector("#messageForUser").textContent = "🎉 게임 종료! 승리하였습니다. 재시작 버튼을 눌러주세요";
+    return;
+  }
 };
 
 const setFlag = function (index, flagExisted) {
