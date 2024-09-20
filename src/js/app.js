@@ -1,14 +1,12 @@
-const gameBoard = document.querySelector(".game-board");
-export const WIDTH_SPACE = 9;
-const HEIGHT_SPACE = 9;
+export const gameBoard = document.querySelector(".game-board");
+export const gameBoardSize = 9;
 export const countMine = 10;
 export const landmineLocation = {};
 export const gameMap = Array.from(Array(9), () => Array(9).fill(null));
 
-
 export const renderBoard = function () {
-  for (let row = 0; row < HEIGHT_SPACE; row++) {
-    for (let column = 0; column < WIDTH_SPACE; column++) {
+  for (let row = 0; row < gameBoardSize; row++) {
+    for (let column = 0; column < gameBoardSize; column++) {
       const space = document.createElement("div");
 
       space.classList.add("item");

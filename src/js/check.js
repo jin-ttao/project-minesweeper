@@ -1,4 +1,4 @@
-import { WIDTH_SPACE, countMine, renderBoard, setGame, landmineLocation, gameMap } from "./app.js";
+import {gameBoard, gameBoardSize, countMine, renderBoard, setGame, landmineLocation, gameMap} from "./app.js";
 renderBoard();
 setGame();
 
@@ -12,11 +12,11 @@ let countFlags = countMine;
 panelCountFlag.textContent = countFlags;
 
 const finishGameWithMine = function (rowClicked, columnClicked) {
-  const indexMineClicked = (rowClicked * WIDTH_SPACE) + columnClicked;
+  const indexMineClicked = (rowClicked * gameBoardSize) + columnClicked;
 
   for (const indexMine2D of Object.keys(landmineLocation)) {
     const [rowMine, columnMine] = indexMine2D.split(",").map(Number);
-    const indexMine = (rowMine * WIDTH_SPACE) + columnMine;
+    const indexMine = (rowMine * gameBoardSize) + columnMine;
     const flagExisted = item[indexMine].querySelector(".img-flag");
 
     if (!flagExisted) {
@@ -29,12 +29,12 @@ const finishGameWithMine = function (rowClicked, columnClicked) {
   }
 
   item[indexMineClicked].classList.add("mine-clicked");
-  document.querySelector(".game-board").classList.add("block-click");
+  gameBoard.classList.add("block-click");
   document.querySelector("#messageForUser").textContent = "🫠 아쉽군요! 위 가운데 버튼을 눌러 다시 시작해보세요!";
   resetButton.classList.add("lose-game");
 };
 
-const reset = function () {
+const resetGame = function () {
   item.forEach((element) => {
     element.classList.remove("resolved-item", "landmine", "landmine-with-flag", "mine-clicked");
     element.textContent = "";
@@ -105,7 +105,7 @@ const resolveItemBlank = function (row, column) {
 };
 
 const confirmResolution = function (row, column) {
-  const index = (row * WIDTH_SPACE) + column;
+  const index = (row * gameBoardSize) + column;
   const flagExisted = item[index].querySelector(".img-flag");
 
   item[index].classList.add("resolved-item");
@@ -126,7 +126,7 @@ const confirmResolution = function (row, column) {
   }, 0);
 
   if (countUnresolved === countMine) {
-    document.querySelector(".game-board").classList.add("block-click");
+    gameBoard.classList.add("block-click");
     document.querySelector("#messageForUser").textContent = "🎉 게임 종료! 승리하였습니다. 재시작 버튼을 눌러주세요";
     return;
   }
@@ -153,7 +153,7 @@ item.forEach((element) => {
   element.addEventListener("mousedown", (event) => {
     const rowItemClicked = parseInt(event.currentTarget.dataset.row);
     const columnItemClicked = parseInt(event.currentTarget.dataset.column);
-    const indexElementCliked = (rowItemClicked * WIDTH_SPACE) + columnItemClicked;
+    const indexElementCliked = (rowItemClicked * gameBoardSize) + columnItemClicked;
     const flagExisted = item[indexElementCliked].querySelector(".img-flag");
 
     if (event.button === 0 && flagExisted === null) {
@@ -172,4 +172,4 @@ item.forEach((element) => {
   element.addEventListener("contextmenu", (event) => event.preventDefault());
 });
 
-resetButton.addEventListener("click", reset);
+resetButton.addEventListener("click", resetGame);
