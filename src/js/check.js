@@ -1,43 +1,38 @@
-import { renderBoard, setGame, landmineLocation, gameMap } from "./app.js";
+import { WIDTH_SPACE, countMine, renderBoard, setGame, landmineLocation, gameMap } from "./app.js";
 renderBoard();
 setGame();
 
-const WIDTH_SPACE = 9;
 const item = document.querySelectorAll(".item");
 const resetButton = document.querySelector(".reset-button");
 const panelCountFlag = document.querySelector("#panelCountFlag");
 const resolvedItem = Array.from(new Array(9), () => new Array(9).fill(false));
 const blanksAfterClickBlank = [];
-let countFlags = 10;
+let countFlags = countMine;
 
 panelCountFlag.textContent = countFlags;
 
-const clickMine = function (rowClicked, columnClicked) {
-  const index = (rowClicked * WIDTH_SPACE) + columnClicked;
+const finishGameWithMine = function (rowClicked, columnClicked) {
+  const indexMineClicked = (rowClicked * WIDTH_SPACE) + columnClicked;
 
-  for (const key of Object.keys(landmineLocation)) {
-    const [row, column] = key.split(",");
+  for (const indexMine2D of Object.keys(landmineLocation)) {
+    const [rowMine, columnMine] = indexMine2D.split(",").map(Number);
+    const indexMine = (rowMine * WIDTH_SPACE) + columnMine;
+    const flagExisted = item[indexMine].querySelector(".img-flag");
 
-    item.forEach((element) => {
-      if (element.dataset.row === row && element.dataset.column === column) {
-        const flagExisted = element.querySelector(".img-flag");
+    if (!flagExisted) {
+      item[indexMine].classList.add("landmine");
+    }
 
-        if (!flagExisted) {
-          element.classList.add("landmine");
-        }
-
-        if (flagExisted) {
-          element.classList.add("landmine-with-flag");
-        }
-      }
-    });
+    if (flagExisted) {
+      item[indexMine].classList.add("landmine-with-flag");
+    }
   }
 
-  item[index].classList.add("mine-clicked");
+  item[indexMineClicked].classList.add("mine-clicked");
   document.querySelector(".game-board").classList.add("block-click");
   document.querySelector("#messageForUser").textContent = "🫠 아쉽군요! 위 가운데 버튼을 눌러 다시 시작해보세요!";
   resetButton.classList.add("lose-game");
-}
+};
 
 const reset = function () {
   item.forEach((element) => {
@@ -54,7 +49,7 @@ const reset = function () {
   gameMap.forEach((array) => array.fill(null));
   resolvedItem.forEach((array) => array.fill(false));
 
-  countFlags = 10;
+  countFlags = countMine;
   panelCountFlag.textContent = countFlags;
 
   setGame();
@@ -62,7 +57,7 @@ const reset = function () {
 
 const checkItemValue = function (row, column) {
   if (gameMap[row][column] === 4) {
-    clickMine(row, column);
+    finishGameWithMine(row, column);
     return;
   }
 

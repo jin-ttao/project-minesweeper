@@ -1,6 +1,7 @@
 const gameBoard = document.querySelector(".game-board");
-const WIDTH_SPACE = 9;
+export const WIDTH_SPACE = 9;
 const HEIGHT_SPACE = 9;
+export const countMine = 10;
 export const landmineLocation = {};
 export const gameMap = Array.from(Array(9), () => Array(9).fill(null));
 
@@ -20,7 +21,7 @@ export const renderBoard = function () {
 };
 
 export const setGame = function () {
-  while (Object.keys(landmineLocation).length < 10) {
+  while (Object.keys(landmineLocation).length < countMine) {
     const randomArray = Array.from(new Array(2), () =>
       Math.floor(Math.random() * 9)
     );
